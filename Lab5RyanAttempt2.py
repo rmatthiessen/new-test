@@ -26,14 +26,14 @@ try:
                 print(bbox)
                 sleep = time.sleep(0.001) # Sleep time (self-specified)
                 kx = 500 # Gain factor in x
-                ky = 25 # Gain factor in y
+                ky = 500 # Gain factor in y
                 centerCameraX = 320 # 1/2 horizontal pixel count of camera
                 centerX = int((bbox[0,0,0] + bbox[0,2,0])/2)
                 centerY = int((bbox[0,0,1] + bbox[0,2,1])/2)
                 sizeX = int((bbox[0,0,0] - bbox[0,2,0]))
-                sizeY = int((bbox[0,0,1] - bbox[0,2,1]))
+                sizeY = abs(int((bbox[0,0,1] - bbox[0,2,1])))
                 centerDiffX = int(kx*abs(centerX - centerCameraX))
-                sizeDiffY = int(abs(ky*sizeY))
+                sizeDiffY = int(ky*sizeY)
                 print("Aruco square pixel distance in X is: ",centerX)
                 print("Speed with which to move the robot is: ",centerDiffX)
                 print("Pixel height of Aruco is: ",abs(sizeY))
@@ -50,12 +50,12 @@ try:
                                         PWM.setMotorModel(0,0,0,0)
 					break
                 else:
-                    if sizeY < 40: # box is less than 70 pixels tall
+                    if sizeY < 50: # box is less than 50 pixels tall
                         PWM.setMotorModel(sizeDiffY,sizeDiffY,sizeDiffY,sizeDiffY)
                         sleep
                         PWM.setMotorModel(0,0,0,0)
                         break
-                    elif sizeY > 80: # box is greater than 150 pixels tall
+                    elif sizeY > 70: # box is greater than 70 pixels tall
                         PWM.setMotorModel(-sizeDiffY,-sizeDiffY,-sizeDiffY,-sizeDiffY)
                         sleep
                         PWM.setMotorModel(0,0,0,0)
